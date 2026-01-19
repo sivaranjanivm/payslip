@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payslip Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: azure;
+
+            padding: 20px;
+            margin: 0 auto;
+            /* text-align: center; */
+        }
+
+        /* header section */
+
+        header {
+            max-width: 1300px;
+            padding: 30px;
+            background-color: white;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1c1e81;
+        }
+
+        .header-left p {
+            font-size: 24px;
+            font-weight: 400;
+            color: #1c1e81;
+        }
+
+        .header-right {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-right p {
+            font-size: 24px;
+            font-weight: 400;
+            color: #1c1e81;
+        }
+
+        .btn a {
+            text-decoration: none;
+            padding: 15px 30px;
+            color: white;
+            background-color: #1c1e81;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            color: white;
+            background-color: #1c1e81;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        /* employee payslip title section */
+
+        .title h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: black;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+
+        }
+
+        .btns {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .print-btn {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1c1e81;
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-right: 20px;
+        }
+
+        .print-btn img {
+            width: 28px;
+            height: 28px;
+            margin-right: 20px;
+
+        }
+
+        .download-btn {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            background-color: #1c1e81;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-left: 20px;
+        }
+
+        .download-btn img {
+            width: 28px;
+            height: 28px;
+            margin-right: 20px;
+        }
+
+        /* payslip container section */
+
+        .container {
+            max-width: 1000px;
+            background-color: white;
+            border: 2px solid gray;
+            box-shadow: 2px 4px 5px grey;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        /* FORCE A4 SIZE FOR PDF */
+        .container {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        /* prevent breaking */
+        .container * {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+
+        /* company and employee detail section */
+        .com-logo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            padding: 30px 30px;
+            margin: 0 auto;
+        }
+
+
+
+        .com-logo img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        
+
+        .com-address h1 {
+            margin: 0 auto;
+            font-size: 20px;
+            font-weight: 600;
+            color:#1c1e81;
+            line-height: 1.7;
+        }
+
+        .com-address p {
+            margin: 0 auto;
+            font-size: 18px;
+            font-weight: 300;
+            color: black;
+            line-height: 1.6;
+        }
+
+        .emp-statement {
+            line-height: 1.7;
+        }
+
+        .emp-statement h2 {
+            color: #1c1e81;
+            text-decoration: underline;
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            color: black;
+        }
+
+        input {
+            border: none;
+            font-size: 16px;
+            color: black;
+        }
+
+        /* income section */
+        .income-section {
+            margin-bottom: 30px;
+            /* border-bottom: 2px solid gray; */
+
+        }
+
+        .income {
+            margin: 0 auto;
+            display: grid;
+            justify-content: space-between;
+            grid-template-columns: repeat(2, 1fr);
+           gap: 50px;
+            margin-bottom: 30px;
+            /* margin-left: 40px; */
+
+
+        }
+
+        .table {
+            width: 300px;
+            /* height: 180px; */
+            background-color: white;
+            border: none;
+            border-collapse: collapse;
+            border: 2px solid rgb(44, 44, 44);
+            padding: 20px 24px;
+            border-radius: 20px
+        }
+
+        .table th,
+        .table td {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+
+
+        .earnings {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* border: 2px solid rgb(44, 44, 44);
+            border-radius: 20px; */
+
+        }
+
+        .deduction {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+        .deduction h3 {
+            padding: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .deduction p {
+
+            padding: 10px;
+            font-size: 22px;
+            font-weight: 400;
+
+        }
+
+        .income h3 {
+            padding: 10px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .income p {
+            padding: 10px;
+            font-size: 22px;
+            font-weight: 400;
+        }
+
+        .heading {
+            text-align: left;
+            background-color: rgb(237, 238, 238);
+            border-bottom: 2px solid gray;
+        }
+
+        .total {
+            background-color: #1c1e81;
+            color: white;
+        }
+
+        /* net payable section */
+        .net-payable {
+            margin: 0 auto;
+            margin-bottom: 90px;
+            background-color: rgb(242, 253, 253);
+            /* margin-left: 40px; */
+
+        }
+
+        .net {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            border: 2px solid gray;
+            border-radius: 10px;
+
+        }
+
+        .net h3 {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .net p {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .total-btn {
+            color: white;
+            background-color: #1c1e81;
+            border: none;
+            border-radius: 10px;
+            font-size: 30px;
+            padding: 10px 10px;
+        }
+
+        .note {
+            font-size: 20px;
+            font-weight: 400;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            float: right;
+        }
+
+        /* <!-- acknowledged section --> */
+        .acknowledged {
+            margin-top: 30px;
+            border-top: 2px solid gray;
+            margin: 0 auto;
+            margin-bottom: 100px;
+            /* text-align: center; */
+        }
+
+        .acknowledged h2 {
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-bottom: 60px;
+            text-align: center;
+            color: #1c1e81;
+        }
+
+        .sign {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+        }
+
+        .sign h3 {
+            margin-top: 10px;
+            font-size: 20px;
+            padding-top: 20px;
+            border-top: 3px solid #1c1e81;
+        }
+
+        .sign p {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #1c1e81;
+        }
+
+        .container,
+        .income-section,
+        .net-payable,
+        .acknowledged,
+        .table,
+        .net {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .btns,
+            header {
+                display: none;
+            }
+
+            .container {
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- header section -->
+    <header>
+        <div class="header-left">
+            <h1>VETRI IT SYSTEM</h1>
+            <p>~Employee Payslip~</p>
+        </div>
+        <div class="header-right">
+            <p>Generated Payslip</p>
+            <button class="btn"><a href="index.html">Logout</a></button>
+        </div>
+    </header>
+
+    <!-- employee payslip section -->
+
+    <div class="title">
+        <h1>EMPLOYEE PAYSLIP</h1>
+        <div class="btns">
+            <button class="print-btn" onclick="window.print()">
+                <img src="image/print icon.png">Print
+            </button>
+
+            <button type="button" class="download-btn" onclick="downloadPDF()">
+                <img src="image/download icon.png">Download
+            </button>
+
+        </div>
+    </div>
+    <!-- payslip container section -->
+    <section class="container" id="payslip">
+
+
+        <!-- company and employee detail -->
+
+        <div class="company">
+            <div class="com-logo">
+                <div>
+                    <img src="image/VIS LOGO.png" alt="logo" class="logo">
+                    <div class="com-address">
+                        <h1>VETRI IT SYSTEM PVT LTD.,</h1>
+                        <p>Shanthi complex, Second floor,<br>Surandai, Tenkasi - 627 859<br>India</p>
+                    </div>
+                </div>
+
+                <div class="emp-statement">
+                    <h2>Employee Statement</h2>
+                    <form>
+                        <div>
+                            <label>Employee Name :</label>
+                            <input type="text" id="ps-name">
+                        </div>
+                        <div>
+                            <label>Employee ID :</label>
+                            <input type="text" id="ps-id">
+                        </div>
+                        <div>
+                            <label>Pay Period :</label>
+                            <input type="text" id="ps-period">
+                        </div>
+                        <div>
+                            <label>Paid Days :</label>
+                            <input type="text" id="ps-paid">
+                        </div>
+                        <div>
+                            <label>Loss of Pay Days :</label>
+                            <input type="text" id="ps-lop">
+                        </div>
+                        <div>
+                            <label>Payment Date :</label>
+                            <input type="text" id="ps-date">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- income section -->
+
+        <div class="income-section">
+
+
+            <div class="income">
+                <div class="earnings">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h3 class="heading">Earnings</h3>
+                                </th>
+                                <th>
+                                    <h3 class="heading">Amount</h3>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Basic</p>
+                                </td>
+                                <td>
+                                    <p id="ps-basic">₹ 0</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Incentive</p>
+                                </td>
+                                <td>
+                                    <p id="ps-incentive">₹ 0</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <h3 class="total">Gross Earnings</h3>
+                                </td>
+                                <td>
+                                    <h3 class="total" id="ps-gross">₹ 0</h3>
+                                </td>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="deduction">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h3 class="heading">Deduction</h3>
+                                </th>
+                                <th>
+                                    <h3 class="heading">Amount</h3>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Income Tax</p>
+                                </td>
+                                <td>
+                                    <p id="ps-deduction">₹ 0</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <h3 class="total">Total Deduction</h3>
+                                </td>
+                                <td>
+                                    <h3 class="total" id="ps-total-deduction">₹ 0</h3>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- net payable section -->
+
+        <div class="net-payable">
+            <div class="net">
+                <div>
+                    <h1>TOTAL NET PAYABLE</h1>
+                    <p>Gross Earning - Total Deduction</p>
+                </div>
+                <div>
+                    <button class="total-btn" id="ps-net">₹ 0</button>
+
+                </div>
+            </div>
+            <p class="note" id="ps-words">Amount in words: Indian Rupee Fifteen Thousand Five Hundred Only</p>
+        </div>
+        <!-- acknowledged section -->
+
+        <div class="acknowledged">
+            <h2>ACKONELEDGED BY,</h2>
+            <div class="sign">
+                <div>
+                    <h3>yedidyah cherup</h3>
+                    <p>Employee, VETRI IT SYSTEMS PVT LTD.,</p>
+                </div>
+                <div>
+                    <h3>AUTHORISED NAME</h3>
+                    <p>Managing Director, VETRI IT SYSTEMS PVT LTD.,</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+
+        window.onload = function () {
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+        if (!isLoggedIn) {
+            window.location.href = "index.html";
+        }
+
+        // show username if needed
+        const user = localStorage.getItem("loggedInUser");
+        if (user) {
+            document.getElementById("employeeName").innerText = user;
+        }
+    };
+
+
+        const data = JSON.parse(localStorage.getItem("payslipData"));
+
+        // ---------- FORMAT CURRENCY ----------
+        function formatINR(amount) {
+            return "₹ " + Number(amount).toLocaleString("en-IN");
+        }
+
+        // ---------- NUMBER TO WORDS (INDIAN) ----------
+        function numberToWords(num) {
+            const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+            const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+            const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+                "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+
+            function convert(n) {
+                if (n < 10) return ones[n];
+                if (n < 20) return teens[n - 10];
+                if (n < 100) return tens[Math.floor(n / 10)] + " " + ones[n % 10];
+                if (n < 1000) return ones[Math.floor(n / 100)] + " Hundred " + convert(n % 100);
+                if (n < 100000) return convert(Math.floor(n / 1000)) + " Thousand " + convert(n % 1000);
+                if (n < 10000000) return convert(Math.floor(n / 100000)) + " Lakh " + convert(n % 100000);
+                return convert(Math.floor(n / 10000000)) + " Crore " + convert(n % 10000000);
+            }
+
+            return convert(num).trim();
+        }
+
+        if (data) {
+            const basic = Number(data.basic);
+            const incentive = Number(data.incentive);
+            const deduction = Number(data.deduction);
+
+            const gross = basic + incentive;
+            const net = gross - deduction;
+
+            // employee details
+            document.getElementById("ps-name").value = data.name;
+            document.getElementById("ps-id").value = data.id;
+            document.getElementById("ps-period").value = data.period;
+            document.getElementById("ps-paid").value = data.paidDays;
+            document.getElementById("ps-lop").value = data.lop;
+            document.getElementById("ps-date").value = data.payDate;
+
+            // earnings
+            document.getElementById("ps-basic").innerText = formatINR(basic);
+            document.getElementById("ps-incentive").innerText = formatINR(incentive);
+            document.getElementById("ps-gross").innerText = formatINR(gross);
+
+            // deductions
+            document.getElementById("ps-deduction").innerText = formatINR(deduction);
+            document.getElementById("ps-total-deduction").innerText = formatINR(deduction);
+
+            // net pay
+            document.getElementById("ps-net").innerText = formatINR(net);
+
+            document.getElementById("ps-words").innerText =
+                "Amount in words: Indian Rupee " + numberToWords(net) + " Only";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = localStorage.getItem("loggedInUser");
+
+            if (!user) {
+                window.location.replace("login.html");
+                return;
+            }
+
+            document.getElementById("employeeName").textContent = user;
+        });
+
+
+        function downloadPDF() {
+            const element = document.getElementById("payslip");
+
+            const opt = {
+                margin: 5,
+                filename: "Employee_Payslip.pdf",
+                image: { type: "jpeg", quality: 1 },
+                html2canvas: {
+                    scale: 3,        // better quality
+                    useCORS: true,
+                    scrollY: 0
+                },
+                jsPDF: {
+                    unit: "mm",
+                    format: "a4",
+                    orientation: "portrait"
+                },
+                pagebreak: {
+                    mode: ["css", "avoid-all"]
+                }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+
+        window.onload = function () {
+            const user = localStorage.getItem("loggedInUser");
+
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                document.getElementById("employeeName").innerText = user;
+            }
+        };
+
+    </script>
+
+
+</body>
+
+</html>

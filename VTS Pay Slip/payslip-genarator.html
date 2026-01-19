@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payslip Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: azure;
+
+            padding: 20px;
+            margin: 0 auto;
+            /* text-align: center; */
+        }
+
+        /* header section */
+
+        header {
+            max-width: 1000px;
+            padding: 30px;
+            background-color: white;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1c1e81;
+        }
+
+        .header-left p {
+            font-size: 24px;
+            font-weight: 400;
+            color: #1c1e81;
+        }
+
+        .header-right {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-right p {
+            font-size: 24px;
+            font-weight: 400;
+            color: #1c1e81;
+        }
+
+        .btn a {
+            text-decoration: none;
+            padding: 15px 30px;
+            color: white;
+            background-color: #1c1e81;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            color: white;
+            background-color: #1c1e81;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .title h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: black;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+
+        }
+
+        /* payslip container section */
+
+        .container {
+            max-width: 1000px;
+            background-color: white;
+            border: 2px solid gray;
+            box-shadow: 2px 4px 5px grey;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        /* company detail section */
+
+        .com-logo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 30px;
+        }
+
+        .company {
+            border-bottom: 2px solid gray;
+        }
+
+        .com-logo img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .com-logo h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: black;
+        }
+
+        .com-logo p {
+            font-size: 20px;
+            color: black;
+        }
+
+        .com-address h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: black;
+            line-height: 1.7;
+        }
+
+        .com-address p {
+            font-size: 20px;
+            font-weight: 400;
+            color: black;
+            line-height: 1.6;
+        }
+
+
+        /* employee pay summary */
+        .summary {
+            border-bottom: 2px solid gray;
+        }
+
+        .summary h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #1c1e81;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .optional {
+            color: red;
+        }
+
+        .emp-detail {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+
+        }
+
+        .form-group label {
+            font-size: 20px;
+            color: black;
+            font-weight: 400;
+        }
+
+        .form-group input {
+            font-size: 20px;
+            font-weight: 400px;
+            color: black;
+            padding: 8px 8px;
+            border: 2px solid grey;
+            border-radius: 10px;
+            transition: all 0.3s;
+            background: white;
+
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Income section */
+
+        .table input {
+            border: none;
+            font-size: 20px;
+
+        }
+
+        .income-section {
+            margin-bottom: 30px;
+            border-bottom: 2px solid gray;
+
+        }
+
+        .income-section h1 {
+            margin: 0 auto;
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #1c1e81;
+            line-height: 1.7;
+        }
+
+        .income {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+
+
+        }
+
+        .table {
+            width: 450px;
+            height: 180px;
+            background-color: white;
+            border-collapse: collapse;
+            border: 2px solid rgb(44, 44, 44);
+            padding: 20px 24px;
+            border-radius: 10px;
+        }
+
+        .table th,
+        .table td {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+
+
+        .earnings {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 100px;
+
+        }
+
+        .deduction {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 100px;
+
+
+        }
+
+        .deduction h3 {
+            padding: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .deduction p {
+
+            padding: 10px;
+            font-size: 22px;
+            font-weight: 400;
+
+        }
+
+        .income h3 {
+            padding: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .income p {
+            padding: 10px;
+            font-size: 22px;
+            font-weight: 400;
+        }
+
+        .heading {
+            text-align: left;
+            background-color: rgb(237, 238, 238);
+            border-bottom: 2px solid gray;
+        }
+
+        .total {
+            background-color: #1c1e81;
+            color: white;
+            padding: 12px 10px;
+            /* ✅ THIS LINE FIXES IT */
+        }
+
+
+        /* <!-- net payable section --> */
+
+        .net-payable {
+            margin-bottom: 90px;
+            background-color: rgb(242, 253, 253);
+
+        }
+
+        .net {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            border: 2px solid gray;
+            border-radius: 10px;
+        }
+
+        .net h3 {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .net p {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .total-btn {
+            color: white;
+            background-color: #1c1e81;
+            border: none;
+            border-radius: 10px;
+            font-size: 30px;
+            padding: 10px 10px;
+        }
+
+        .note {
+            font-size: 20px;
+            font-weight: 400;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            float: right;
+        }
+
+        .generate {
+            margin: 0 auto;
+            align-items: center;
+            text-align: center;
+            margin-top: 30px;
+            border-top: 2px solid gray;
+        }
+
+        .generate a {
+            text-decoration: none;
+            color: white;
+            background-color: #1c1e81;
+            font-size: 30px;
+            font-weight: 700;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 10px;
+
+        }
+
+        .generate button {
+            margin-top: 30px;
+            margin-left: 50px;
+            color: white;
+            background-color: #1c1e81;
+            font-size: 30px;
+            font-weight: 700;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 10px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- header section -->
+
+    <header>
+        <div class="header-left">
+            <h1>VETRI IT SYSTEM</h1>
+            <p>~Employee Payslip~</p>
+        </div>
+        <div class="header-right">
+            <p>Generated Payslip</p>
+            <button class="btn"><a href="index.html">Logout</a></button>
+        </div>
+    </header>
+
+    <div class="title">
+        <h1>EMPLOYEE PAYSLIP GENERATOR</h1>
+    </div>
+    <!-- Payslip section -->
+    <section class="container">
+
+        <!-- company details section -->
+        <div class="company">
+            <div class="com-logo">
+                <img src="image/VIS LOGO.png" alt="logo" class="logo">
+                <div>
+                    <p>Payslip for the Month</p>
+                    <h1>October 2025</h1>
+                </div>
+            </div>
+            <div class="com-address">
+                <h1>VETRI IT SYSTEM PVT LTD.,</h1>
+                <p>Shanthi complex, Second floor,<br>Surandai, Tenkasi - 627 859<br>India</p>
+            </div>
+        </div>
+
+        <!-- Employee pay summary section -->
+
+        <div class="summary">
+            <h1>Employee Pay Summary<span class="optional">*</span></h1>
+            <div class="emp-detail">
+                <div class="form-group">
+                    <label>Employee Name :</label>
+                    <input type="text" id="emp-name" placeholder="yedidyah cherup">
+                </div>
+                <div class="form-group">
+                    <label>Employee ID :</label>
+                    <input type="text" id="emp-id" placeholder="1122334455">
+                </div>
+                <div class="form-group">
+                    <label>Pay Period :</label>
+                    <input type="text" id="emp-period" placeholder="Sep 1, 2025 - sep 30, 2025">
+                </div>
+                <div class="form-group">
+                    <label>Paid Days :</label>
+                    <input type="text" id="paid-days" placeholder="26">
+                </div>
+                <div class="form-group">
+                    <label>Loss of Pay Days :</label>
+                    <input type="text" id="lop-days" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Payment Dates :</label>
+                    <input type="text" id="pay-date" placeholder="Oct 15, 2025">
+                </div>
+            </div>
+        </div>
+
+        <!-- Income section -->
+        <div class="income-section">
+            <h1>Income Details<span class="optional">*</span></h1>
+
+            <div class="income">
+                <div class="earnings">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h3 class="heading">Earnings</h3>
+                                </th>
+                                <th>
+                                    <h3 class="heading">Amount</h3>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Basic</p>
+                                </td>
+                                <td><input type="number" id="basic" value="15000"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Incentive</p>
+                                </td>
+                                <td><input type="number" id="incentive" value="1000"></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <h3 class="total">Gross Earnings</h3>
+                                </td>
+                                <td>
+                                    <h3 class="total" id="gross">₹ 0</h3>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="deduction">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h3 class="heading">Deduction</h3>
+                                </th>
+                                <th>
+                                    <h3 class="heading">Amount</h3>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Income Tax</p>
+                                </td>
+                                <td><input type="number" id="deduction" value="500"></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <h3 class="total">Total Deduction</h3>
+                                </td>
+                                <td>
+                                    <h3 class="total" id="totalDeduction">₹ 0</h3>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- net payable section -->
+        <div class="net-payable">
+            <div class="net">
+                <div>
+                    <h1>TOTAL NET PAYABLE</h1>
+                    <p>Gross Earning - Total Deduction</p>
+                </div>
+                <div>
+                    <button class="total-btn" id="netPay">₹ 0</button>
+                </div>
+            </div>
+            <p class="note" id="amountWords"></p>
+        </div>
+
+        <div class="generate">
+            <button onclick="generatePayslip()">Generate Payslip</button>
+
+        </div>
+    </section>
+
+    <script>
+
+       window.onload = function () {
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+        if (!isLoggedIn) {
+            window.location.href = "index.html";
+        }
+
+        // show username if needed
+        const user = localStorage.getItem("loggedInUser");
+        if (user) {
+            document.getElementById("employeeName").innerText = user;
+        }
+    };
+
+        function generatePayslip() {
+
+            // Get values
+            let basic = parseFloat(document.getElementById("basic").value) || 0;
+            let incentive = parseFloat(document.getElementById("incentive").value) || 0;
+            let deduction = parseFloat(document.getElementById("deduction").value) || 0;
+
+            // Calculations
+            let gross = basic + incentive;
+            let net = gross - deduction;
+
+            // Update SAME PAGE UI
+            document.getElementById("gross").innerText = "₹ " + gross.toLocaleString();
+            document.getElementById("totalDeduction").innerText = "₹ " + deduction.toLocaleString();
+            document.getElementById("netPay").innerText = "₹ " + net.toLocaleString();
+            document.getElementById("amountWords").innerText =
+                "Amount in words: " + numberToWords(net);
+
+            // Save data for next page
+            const data = {
+                name: document.getElementById("emp-name").value,
+                id: document.getElementById("emp-id").value,
+                period: document.getElementById("emp-period").value,
+                paidDays: document.getElementById("paid-days").value,
+                lop: document.getElementById("lop-days").value,
+                payDate: document.getElementById("pay-date").value,
+                basic,
+                incentive,
+                deduction,
+                gross,
+                net
+            };
+
+            localStorage.setItem("payslipData", JSON.stringify(data));
+
+            // OPTIONAL: redirect after 1 second
+            setTimeout(() => {
+                window.location.href = "employee-payslip1.html";
+            }, 1000);
+        }
+
+        // number to words
+        function numberToWords(num) {
+            if (num === 0) return "Indian Rupee Zero Only";
+
+            const ones = [
+                "", "One", "Two", "Three", "Four", "Five",
+                "Six", "Seven", "Eight", "Nine", "Ten",
+                "Eleven", "Twelve", "Thirteen", "Fourteen",
+                "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"
+            ];
+
+            const tens = [
+                "", "", "Twenty", "Thirty", "Forty",
+                "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"
+            ];
+
+            function convert(n) {
+                let str = "";
+
+                if (n >= 10000000) {
+                    str += convert(Math.floor(n / 10000000)) + " Crore ";
+                    n %= 10000000;
+                }
+                if (n >= 100000) {
+                    str += convert(Math.floor(n / 100000)) + " Lakh ";
+                    n %= 100000;
+                }
+                if (n >= 1000) {
+                    str += convert(Math.floor(n / 1000)) + " Thousand ";
+                    n %= 1000;
+                }
+                if (n >= 100) {
+                    str += ones[Math.floor(n / 100)] + " Hundred ";
+                    n %= 100;
+                }
+                if (n >= 20) {
+                    str += tens[Math.floor(n / 10)] + " ";
+                    n %= 10;
+                }
+                if (n > 0) {
+                    str += ones[n] + " ";
+                }
+
+                return str.trim();
+            }
+
+            return "Indian Rupee " + convert(num) + " Only";
+        }
+    </script>
+
+
+</body>
+
+</html>
